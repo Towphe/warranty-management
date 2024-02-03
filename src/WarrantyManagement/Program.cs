@@ -1,9 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Npgsql;
+using WarrantyManagement.Models.Repo;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddHttpsRedirection(opts =>{
     opts.HttpsPort = 44350;
+});
+builder.Services.AddDbContext<WarrantydbContext>(opts =>{
+    opts.UseNpgsql(builder.Configuration["db-key"]);
 });
 
 var app = builder.Build();
