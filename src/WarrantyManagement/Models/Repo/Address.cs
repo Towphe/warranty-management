@@ -21,5 +21,7 @@ public partial class Address
 
     public DateOnly? UpdatedAt { get; set; }
 
-    public virtual ICollection<User> Users { get; } = new List<User>();
+    public int UserId { get; set; }
+
+    public virtual User User { get; set; } = null!;
 }
