@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WarrantyManagement.Models.Repo;
-
-public partial class Brand
+namespace WarrantyManagement.Models.Repo
 {
-    public int Id { get; set; }
+    public partial class Brand
+    {
+        public Brand()
+        {
+            Products = new HashSet<Product>();
+            WarrantyEntries = new HashSet<WarrantyEntry>();
+        }
 
-    public string? Name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; } = null!;
+        public bool IsDeleted { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
-    public DateOnly CreatedAt { get; set; }
-
-    public DateOnly? UpdatedAt { get; set; }
-
-    public virtual ICollection<Product> Products { get; } = new List<Product>();
+        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<WarrantyEntry> WarrantyEntries { get; set; }
+    }
 }
