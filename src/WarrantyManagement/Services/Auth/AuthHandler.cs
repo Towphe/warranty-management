@@ -10,8 +10,8 @@ namespace WarrantyManagement.Services.Auth;
 
 public class AuthHandler : IAuthHandler{
     private readonly IConfiguration _configuration;
-    private readonly WarrantydbContext _dbContext;
-    public AuthHandler(IConfiguration config, WarrantydbContext dbCtx){
+    private readonly warrantyContext _dbContext;
+    public AuthHandler(IConfiguration config, warrantyContext dbCtx){
         _configuration = config;
         _dbContext = dbCtx;
     }
@@ -53,17 +53,15 @@ public class AuthHandler : IAuthHandler{
     }
 
     public async Task<(bool, string)> Login(LoginModel login){
-        TokenGenerationModel? tokenGenerationModel = await (from u in _dbContext.Users
-                                                            join r in _dbContext.Roles on u.RoleId equals r.Id
+        TokenGenerationModel? tokenGenerationModel = await (from u in _dbContext.Admins
                                                             select new TokenGenerationModel(){
                                                                 Name = u.FirstName + " " + u.LastName,
                                                                 Email = u.Email ?? "",
                                                                 PasswordHash = u.Password,
-                                                                Role = r.Name
+                                                                Role = "Admin"
                                                             }).FirstOrDefaultAsync(ur => ur.Email == login.Email);
         if (tokenGenerationModel == null){
             // Return NonexistentUser error
-            Console.WriteLine("Here 1");
             return (false, "NonexistentUser");
         }
         if (!BCrypt.Net.BCrypt.Verify(login.Password, tokenGenerationModel.PasswordHash))
@@ -79,35 +77,21 @@ public class AuthHandler : IAuthHandler{
     }
 
     public async Task<(bool, string)> Register(RegisterModel register, int role){
-        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == register.Email);
+        var admin = await _dbContext.Admins.FirstOrDefaultAsync(u => u.Email == register.Email);
 
-        if (user != null){
+        if (admin != null){
             return (false, "EmailAlreadyExists");
         }
 
-        user = new User(){
+        admin = new Admin(){
             FirstName = register.FirstName,
             LastName = register.LastName,
+            Username = register.Username,
             Email = register.Email,
-            Mobile = register.Mobile,
-            Password = BCrypt.Net.BCrypt.HashPassword(register.Password),
-            RoleId = role
+            Password = BCrypt.Net.BCrypt.HashPassword(register.Password)
         };
 
-        await _dbContext.Users.AddAsync(user);
-        
-        await _dbContext.SaveChangesAsync();
-
-        user = await _dbContext.Users.FirstAsync(u => u.Email == register.Email);
-
-        await _dbContext.Addresses.AddAsync(new Address(){
-            UserId = user.Id,
-            Region = register.Region,
-            City = register.City,
-            Brgy = register.Brgy,
-            Street = register.Street,
-            Zipcode = register.ZipCode
-        });
+        await _dbContext.Admins.AddAsync(admin);
 
         await _dbContext.SaveChangesAsync();
 

@@ -14,6 +14,8 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-
+        foreach (var s in HttpContext.Session.Keys){
+            Console.WriteLine(s);
+        }
     }
 }

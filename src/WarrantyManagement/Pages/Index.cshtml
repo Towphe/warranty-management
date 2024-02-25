@@ -4,7 +4,33 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    body{
+        height: 100vh;
+    }
+
+    div{
+        text-align: center;
+        width: 95%;
+    }
+
+    p{
+        margin-bottom: 1.5em;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        width: 10em;
+        background-color: rgb(9, 133, 158);
+        border-radius: 3em;
+        padding: 0.75em 1.25em;
+        font-weight: 800;
+    }
+</style>
+
+<div>
+    <h1>Warranty Portal</h1>
+    <p>To register your device for warranty, kindly enter the necessary details about your device.</p>
+    <a href="/user-info">Register my device</a>
 </div>

@@ -16,26 +16,24 @@ public class AuthController : ControllerBase{
         _authHandler = authHdlr;
     }
 
+    /// <summary>
+    /// Authenticates user. Redirects to admin index when successful.
+    /// </summary>
+    /// <param name="login"></param>
+    /// <returns></returns>
     [HttpPost("login")]
-    public async Task<APIResponse> Login([FromBody] LoginModel login){
+    public async Task<IActionResult> Login([FromForm] LoginModel login){
         var token = await _authHandler.Login(login);
         if (!token.Item1){
             // error
             Response.StatusCode = (int)HttpStatusCode.BadRequest;
-            return new APIResponse(){
-                StatusCode = HttpStatusCode.BadRequest,
-                Message = "Incorrect email or password."
-            };
+            return RedirectToPage("/admin/signIn");
         }
-        Response.StatusCode = (int)HttpStatusCode.Accepted;
-        return new APIResponse(){
-            StatusCode = HttpStatusCode.Accepted,
-            Message = "Successfully logged in.",
-            Data = new {
-                Token = token.Item2
-            }
-        };    
+        Response.StatusCode = (int)HttpStatusCode.Accepted; 
+        HttpContext.Session.SetString("jwt", token.Item2);
+        return RedirectToPage("/admin/index");
     }
+
     [HttpPost("register")]
     public async Task<APIResponse> Register([FromBody] RegisterModel register){
         var res = await _authHandler.Register(register, 2);

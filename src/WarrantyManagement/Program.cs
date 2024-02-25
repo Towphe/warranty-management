@@ -4,15 +4,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WarrantyManagement.Services.Auth;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(opts => {
+    opts.Conventions.AuthorizePage("/admin");
+    
+});
+
 builder.Services.AddHttpsRedirection(opts =>{
     opts.HttpsPort = 44350;
 });
-builder.Services.AddDbContext<WarrantydbContext>(opts =>{
+builder.Services.AddDbContext<warrantyContext>(opts =>{
     opts.UseNpgsql(builder.Configuration["db-key"]);
 });
 builder.Services.AddAuthentication(opts => {
@@ -20,7 +25,10 @@ builder.Services.AddAuthentication(opts => {
     opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o => {
+    //opts.DefaultForbidScheme = "forbidScheme";
+    //opts.AddScheme<CustomAuthenticationHandler>("forbidScheme", "Handle forbidden");
+}
+).AddJwtBearer(o => {
     o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters(){
         // JWT Payload goes here
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
@@ -34,6 +42,7 @@ builder.Services.AddAuthentication(opts => {
 });
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
+builder.Services.AddSession();
 builder.Services.AddScoped<IAuthHandler, AuthHandler>();
 
 var app = builder.Build();
@@ -50,6 +59,19 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
+
+// authorization using tokens
+app.Use(async (context, next) => {
+    var token = context.Session.GetString("jwt");
+    if (!string.IsNullOrEmpty(token)){
+        context.Request.Headers.Add("Authorization", "Bearer " + token);
+    }
+    await next();
+});
+
+app.UseStatusCodePagesWithRedirects("/error/{0}");
 
 app.UseAuthentication();
 app.UseAuthorization();

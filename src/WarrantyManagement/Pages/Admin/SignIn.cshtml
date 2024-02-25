@@ -1,0 +1,38 @@
+﻿@page
+@model MyApp.Namespace.SignInModel
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<style>
+    body{
+        height: 60vh;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        width: 90vw;
+        gap: 0.25em;
+    }
+    @@media only screen and (min-width: 720px){
+        form{
+            width: 20em;
+        }
+    }
+    h1, label, input, button{
+        display: block;
+    }
+    button{
+        margin-top: 0.5em;
+        padding: 0.25em 0;
+    }
+</style>
+
+<form method="POST" asp-action="login" asp-controller="auth">
+    <h1>Sign In</h1>
+    <label asp-for="Email"></label>
+    <input asp-for="Email" required>
+    <label asp-for="Password"></label>
+    <input asp-for="Password" type="password" required>
+    <button>Sign In</button>
+</form>
