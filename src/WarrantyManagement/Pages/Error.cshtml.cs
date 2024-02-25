@@ -19,9 +19,19 @@ public class ErrorModel : PageModel
         _logger = logger;
     }
 
-    public void OnGet()
+    public int Code {get; set;}
+    public string Title {get; set;}
+    public void OnGet([FromRoute] int code)
     {
-        RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        Code = code;
+        switch (code){
+            case 401:
+                Title = "Unauthorized";
+                break;
+            default:
+                Title = "Error";
+                break;
+        }
     }
 }
 

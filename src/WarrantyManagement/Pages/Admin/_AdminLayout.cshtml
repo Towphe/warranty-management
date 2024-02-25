@@ -1,31 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WarrantyManagement.styles.css" asp-append-version="true" /> *@
     <style>
         html{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.05rem;
-            color: #EEEEEE;
         }
         body{
             margin: 0;
             padding: 0;
             height: auto;
             width: 100vw;
-            background-color: #222831;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
     </style>
 </head>
 <body>
-    @RenderBody()
+    <header>
+        <h1>Warranty Management</h1>
+        <nav>
+            <ul>
+                <li><a href="">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
     <footer>
     </footer>
 </body>
