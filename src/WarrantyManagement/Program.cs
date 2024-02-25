@@ -9,10 +9,7 @@ using System.Net;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages(opts => {
-    opts.Conventions.AuthorizePage("/admin");
-    
-});
+builder.Services.AddRazorPages();
 
 builder.Services.AddHttpsRedirection(opts =>{
     opts.HttpsPort = 44350;
@@ -25,8 +22,6 @@ builder.Services.AddAuthentication(opts => {
     opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    //opts.DefaultForbidScheme = "forbidScheme";
-    //opts.AddScheme<CustomAuthenticationHandler>("forbidScheme", "Handle forbidden");
 }
 ).AddJwtBearer(o => {
     o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters(){
@@ -78,7 +73,5 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapControllers();
-
-app.MapGet("/security/getMessage", () => "Hello World!").RequireAuthorization();
 
 app.Run();

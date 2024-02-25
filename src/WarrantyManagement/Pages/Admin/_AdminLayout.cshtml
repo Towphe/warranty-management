@@ -8,29 +8,88 @@
         html{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             font-size: 1.05rem;
+            color: #EEEEEE;
         }
         body{
             margin: 0;
             padding: 0;
             height: auto;
             width: 100vw;
+            max-height: 100vh;
+            background-color: #222831;
+        }
+        header > h1{
+            display: block;
+            text-align: center;
+        }
+        a{
+            text-decoration: none;
+            color: #EEEEEE;
+        }
+        header{
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            background-color: #222831;
+            height: 19vh;
+        }
+        
+        nav {
+            display: flex;
+            gap: 0.4em;
+        }
+        
+        nav > a{
+            display: block;
+        }
+        
+        main{
+            overflow-y: scroll;
+            height: calc(100vh - 19vh - 5vh);
+            position: fixed;
+            top: 19vh;
+            width: 100vw;
+        }
+        footer{
+            position: fixed;
+            min-width: 100vw;
+            bottom: 0;
+            background-color: #394454;
+            height: 5vh;
+        }
+        @@media only screen and (min-width: 720px){
+            header{
+                flex-direction: row;
+                justify-content: space-around;
+                height: 9vh;
+            }
+            nav{
+                gap: 1em;
+            }
+            main{
+                height: calc(100vh - 9vh - 5vh);
+                top: 9vh;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Warranty Management</h1>
+        <h1><a href="/admin/index">Warranty Management</a></h1>
         <nav>
-            <ul>
-                <li><a href="">Home</a></li>
-            </ul>
+            <a href="/admin/index">Home</a>
+            <a href="/admin/entries">Entries</a>
+            <a href="/admin/catalog">Catalog</a>
+            <a href="/admin/stats">Statistics</a>
+            <a href="/admin/settings">Settings</a>
         </nav>
     </header>
-    <div>
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+    <main>
+        @RenderBody()
+    </main>
     <footer>
     </footer>
 </body>
