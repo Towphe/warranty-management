@@ -1,7 +1,23 @@
 ﻿@page
 @model MyApp.Namespace.IndexModel
 @{
+    ViewData["Title"] = "Home";
     Layout = "_AdminLayout.cshtml";
 }
 
-<h2>Welcome to Admin Page</h2>
+<style>
+    main{
+        height: 65vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    main > div{
+        text-align: center;
+    }
+</style>
+
+<div>
+    <h2>Welcome to Admin Page</h2>
+    <p>As of @DateTime.Now.ToLongDateString(), there are @Model.TotalEntries warranty requests.</p>
+</div>
