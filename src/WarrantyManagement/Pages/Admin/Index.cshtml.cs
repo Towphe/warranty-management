@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MyApp.Namespace
 {
-    //[Authorize(Roles = UserRoles.Admin)]
+    [Authorize(Roles = UserRoles.Admin)]
     public class IndexModel : PageModel
     {
         private readonly warrantyContext _warrantyCtx;

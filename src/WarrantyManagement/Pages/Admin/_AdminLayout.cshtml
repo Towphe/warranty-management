@@ -20,6 +20,7 @@
         }
         header > h1{
             display: block;
+            text-align: center;
         }
         a{
             text-decoration: none;
@@ -28,21 +29,29 @@
         header{
             width: 100vw;
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
             align-items: center;
             position: fixed;
             top: 0;
             background-color: #222831;
+            height: 19vh;
         }
+        
         nav {
             display: flex;
-            gap: 1em;
+            gap: 0.4em;
         }
+        
         nav > a{
             display: block;
         }
+        
         main{
             overflow-y: scroll;
+            height: calc(100vh - 19vh - 5vh);
+            position: fixed;
+            top: 19vh;
+            width: 100vw;
         }
         footer{
             position: fixed;
@@ -50,6 +59,20 @@
             bottom: 0;
             background-color: #394454;
             height: 5vh;
+        }
+        @@media only screen and (min-width: 720px){
+            header{
+                flex-direction: row;
+                justify-content: space-around;
+                height: 9vh;
+            }
+            nav{
+                gap: 1em;
+            }
+            main{
+                height: calc(100vh - 9vh - 5vh);
+                top: 9vh;
+            }
         }
     </style>
 </head>
